@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:17:50 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/24 15:41:04 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/24 16:34:40 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include"get_next_line_bonus.h"
@@ -51,7 +51,7 @@ int	check_newline(char *s)
 			return (idx);
 		++idx;
 	}
-	return (idx);
+	return (-1);
 }
 
 void	reset_buf_offset(char *buf, int idx)
