@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:50:46 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/24 17:15:25 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:42:34 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include"get_next_line_bonus.h"
@@ -32,7 +32,7 @@ char	*get_next_line_bonus(int fd)
 	{
 		dst = (char *)malloc(sizeof(char) * (idx + 1));
 		ft_strdup(dst, buf, idx);
-		reset_buf_offset(buf, idx);
+		reset_buf_offset(buf, idx + 1);
 		return (dst);
 	}
 	else
@@ -42,11 +42,9 @@ char	*get_next_line_bonus(int fd)
 			read_buffer_size(fd, buf);
 			idx = check_newline(buf);	
 		}
-		printf("%d\n", idx);
 		dst = (char *)malloc(sizeof(char) * (idx + 1));
 		ft_strdup(dst, buf, idx);
-		reset_buf_offset(buf, idx);
-		printf("dst: %s\n", dst);
+		reset_buf_offset(buf, idx + 1);
 		return (dst);
 	}
 }
@@ -57,11 +55,17 @@ int	main(void)
 	//int		fd2;
 	char	*dst;
 	char	*dst2;
+	char	*dst3;
+	char	*dst4;
 
 	fd1 = open("./text.txt", O_RDONLY);
 	//fd2 = open("./text2.txt", O_RDONLY);
 	dst = get_next_line_bonus(fd1);
-	printf("%s", dst);
+	printf("dst1: %s", dst);
 	dst2 = get_next_line_bonus(fd1);
-	printf("%s", dst2);
+	printf("dst2: %s", dst2);
+	dst3 = get_next_line_bonus(fd1);
+	printf("dst3: %s", dst3);
+	dst4 = get_next_line_bonus(fd1);
+	printf("dst4: %s", dst4);
 }
