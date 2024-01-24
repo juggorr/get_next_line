@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:50:46 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/24 17:42:34 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:48:14 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include"get_next_line_bonus.h"
@@ -27,12 +27,17 @@ char	*get_next_line_bonus(int fd)
 	int			idx;
 	char		*dst;
 
+	printf("ogbuf: %s\n", buf);
 	idx = check_newline(buf);
+	printf("idx: %d\n", idx);
 	if (idx != -1)
 	{
 		dst = (char *)malloc(sizeof(char) * (idx + 1));
 		ft_strdup(dst, buf, idx);
 		reset_buf_offset(buf, idx + 1);
+		printf("=============\n");
+		printf("buf: %s\n", buf);
+		printf("=============\n");
 		return (dst);
 	}
 	else
@@ -45,6 +50,9 @@ char	*get_next_line_bonus(int fd)
 		dst = (char *)malloc(sizeof(char) * (idx + 1));
 		ft_strdup(dst, buf, idx);
 		reset_buf_offset(buf, idx + 1);
+		printf("=============\n");
+		printf("buf: %s\n", buf);
+		printf("=============\n");
 		return (dst);
 	}
 }
