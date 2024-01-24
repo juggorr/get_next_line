@@ -6,24 +6,25 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:17:50 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/24 16:34:40 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:01:51 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include"get_next_line_bonus.h"
 
-int	ft_stricat(char *dst, char *src, int end_idx)
+void	ft_stricat(char *dst, char *src)
 {
 	int	idx;
 
 	idx = 0;
-	while (idx < BUFFER_SIZE + 1 && src[idx])
-	{
-		dst[end_idx] = src[idx];
+	while (dst[idx])
 		++idx;
-		++end_idx;
+	while (*src)
+	{
+		dst[idx] = *src;
+		++idx;
+		++src;
 	}
-	dst[end_idx] = '\0';
-	return (end_idx);
+	dst[idx] = '\0';
 }
 
 char	*ft_strdup(char *dst, char *src, int len)

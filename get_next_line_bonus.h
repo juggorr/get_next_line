@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:41:36 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/24 15:26:36 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/24 17:11:53 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_BONUS_H
@@ -24,9 +24,9 @@ typedef struct s_node
 	struct s_node	*next;
 }	t_node;
 
-void	read_buffer_size(int fd, char *buf, int idx);
+void	read_buffer_size(int fd, char *buf);
 char	*get_next_line_bonus(int fd);
-int		ft_stricat(char	*dst, char *src, int end_idx);
+void	ft_stricat(char	*dst, char *src);
 char	*ft_strdup(char *dst, char *src, int len);
 int		check_newline(char *s);
 void	reset_buf_offset(char *buf, int idx);
