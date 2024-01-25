@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:17:50 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/24 17:01:51 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/25 10:06:02 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include"get_next_line_bonus.h"
@@ -58,12 +58,19 @@ int	check_newline(char *s)
 void	reset_buf_offset(char *buf, int idx)
 {
 	int	reset_idx;
+	int	tmp_idx;
 
 	reset_idx = 0;
-	while (buf[idx])
+	tmp_idx = idx;
+	while (reset_idx < tmp_idx)
 	{
 		buf[reset_idx] = buf[idx];
 		++reset_idx;
 		++idx;
+	}
+	while (buf[reset_idx])
+	{
+		buf[reset_idx] = 0;
+		++reset_idx;
 	}
 }
