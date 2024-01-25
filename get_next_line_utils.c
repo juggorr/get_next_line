@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:17:50 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/25 12:41:26 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/25 12:42:46 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"get_next_line_bonus.h"
+#include "get_next_line.h"
 
 void	ft_stricat(char *dst, char *src, int src_len)
 {
@@ -47,7 +47,7 @@ int	check_newline(char *s)
 	int	idx;
 
 	idx = 0;
-	while(idx < 4096 && s[idx])
+	while (idx < 4096 && s[idx])
 	{
 		if (s[idx] == '\n')
 			return (idx);
