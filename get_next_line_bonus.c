@@ -5,80 +5,123 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 15:50:46 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/25 11:39:25 by juggorr          ###   ########.fr       */
+/*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
+/*   Updated: 2024/01/26 13:16:41 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"get_next_line_bonus.h"
+#include "get_next_line_bonus.h"
 
-int	read_buffer_size(int fd, char *buf)
+int	ft_strjoin(t_node *node, char *tmp_buf)
 {
-	char	tmp_buf[BUFFER_SIZE + 1];
-	ssize_t	res;
+	char	*new;
+	int		idx;
 
-	if (fd < 0)
-		return (-1);
-	res = read(fd, tmp_buf, BUFFER_SIZE);
-	tmp_buf[res] = '\0';
-	ft_stricat(buf, tmp_buf);
-	return (res);
+	new = (char *)malloc(sizeof(char) * (node->len + 1));
+	if (!new)
+		return (0);
+	idx = 0;
+	while (idx < node->len - node->res)
+	{
+		new[idx] = node->buf[idx];
+		++idx;
+	}
+	while (idx < node->len)
+	{
+		new[idx] = tmp_buf[idx - (node->len - node->res)];
+		++idx;
+	}
+	new[idx] = '\0';
+	free(node->buf);
+	node->buf = new;
+	return (node->len);
 }
 
-char	*line_from_buf(char *buf, int idx)
+char	*ft_split(t_node *node)
+{
+	int		idx;
+	char	*dst;
+	int		dst_len;
+
+	dst_len = check_newline_strlen(node->buf, 0);
+	if (dst_len < 0)
+		return (node->buf);
+	dst = (char *)malloc(sizeof(char) * (dst_len + 1));
+	if (!dst)
+		return (0);
+	idx = 0;
+	while (idx < dst_len)
+	{
+		dst[idx] = node->buf[idx];
+		++idx;
+	}
+	dst[idx] = '\0';
+	if (!reset_buf_offset(node, dst_len))
+		return (0);
+	return (dst);
+}
+
+char	*reset_buf_offset(t_node *node, int len)
 {
 	char	*dst;
+	int		idx;
 
-	dst = (char *)malloc(sizeof(char) * (idx + 1));
+	dst = (char *)malloc(sizeof(char) * (node->len - len + 1));
 	if (!dst)
 		return (0);
-	ft_strdup(dst, buf, idx);
-	reset_buf_offset(buf, idx + 1);
+	while (idx < node->len - len)
+	{
+		dst[idx] = node->buf[idx + node->len - len + 1];
+		++idx;
+	}
+	dst[idx] = '\0';
+	free(node->buf);
+	node->buf = dst;
 	return (dst);
 }
 
-char	*get_next_line_bonus(int fd)
+int	read_to_buf(t_node *node)
 {
-	static char	buf[4096];
-	int			idx;
-	char		*dst;
-	int			res;
+	char	tmp_buf[BUFFER_SIZE + 1];
 
-	idx = check_newline(buf);
-	if (idx != -1)
-		dst = line_from_buf(buf, idx);
-	else
-	{
-		while (idx == -1)
-		{
-			res = read_buffer_size(fd, buf);
-			if (res == 0)
-				return (buf);
-			else if (res == -1)
-				return (0);
-			idx = check_newline(buf);	
-		}
-		dst = line_from_buf(buf, idx);
-	}
-	if (!dst)
+	node->res = read(node->fd, tmp_buf, BUFFER_SIZE);
+	node->len += node->res;
+	node->nl_flag = check_newline_strlen(tmp_buf, 0);
+	ft_strjoin(node, tmp_buf);
+	return (node->len);
+}
+
+char	*get_next_line(int fd)
+{
+	static t_node	*head;
+	t_node			*tmp;
+
+	if (fd < 0)
 		return (0);
-	return (dst);
+	if (!head)
+		head = add_new_fd(head, fd);
+	if (!head)
+		return (0);
+	tmp = find_fd(head, fd);
+	if (!tmp)
+		return (0);
+	while (tmp->nl_flag == -1 || tmp->res == BUFFER_SIZE)
+		read_to_buf(tmp);
+	return (ft_split(tmp));
 }
 
 int	main(void)
 {
-	int		fd1;
+	int	fd = open("./text.txt", O_RDONLY);
 	char	*dst;
-	char	*dst2;
-	char	*dst3;
-	char	*dst4;
 
-	fd1 = open("./text.txt", O_RDONLY);
-	dst = get_next_line_bonus(fd1);
-	printf("dst1: %s", dst);
-	dst2 = get_next_line_bonus(fd1);
-	printf("dst2: %s", dst2);
-	dst3 = get_next_line_bonus(fd1);
-	printf("dst3: %s", dst3);
-	dst4 = get_next_line_bonus(fd1);
-	printf("dst4: %s", dst4);
+	dst = get_next_line(fd);
+	printf("%s", dst);
+	dst = get_next_line(fd);
+	printf("%s", dst);
+	dst = get_next_line(fd);
+	printf("%s", dst);
+	dst = get_next_line(fd);
+	printf("%s", dst);
+	dst = get_next_line(fd);
+	printf("%s", dst);
 }

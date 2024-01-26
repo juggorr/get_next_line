@@ -5,30 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/19 15:41:36 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/25 11:15:38 by juggorr          ###   ########.fr       */
+/*   Created: 2024/01/25 17:25:53 by juggorr           #+#    #+#             */
+/*   Updated: 2024/01/26 12:57:08 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
-# include<stdlib.h>
-# include<unistd.h>
-// delete these !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//# define BUFFER_SIZE 10
-# include<stdio.h>
-# include<fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+//delete these
+# include <stdio.h>
+# include <fcntl.h>
 
 typedef struct s_node
 {
 	int				fd;
+	char			*buf;
+	int				len;
+	ssize_t			res;
+	int				nl_flag;
 	struct s_node	*next;
 }	t_node;
 
-int		read_buffer_size(int fd, char *buf);
 char	*get_next_line_bonus(int fd);
-void	ft_stricat(char	*dst, char *src);
-char	*ft_strdup(char *dst, char *src, int len);
-int		check_newline(char *s);
-void	reset_buf_offset(char *buf, int idx);
+int		read_to_buf(t_node *node);
+char	*reset_buf_offset(t_node *node, int len);
+char	*ft_split(t_node *node);
+int		ft_strjoin(t_node *node, char *tmp_buf);
+int		check_newline_strlen(char *s, int flag);
+t_node	*add_new_fd(t_node *head, int fd);
+t_node	*find_fd(t_node *head, int fd);
 
 #endif

@@ -5,71 +5,66 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 10:17:50 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/25 12:41:26 by juggorr          ###   ########.fr       */
+/*   Created: 2024/01/26 08:52:08 by juggorr           #+#    #+#             */
+/*   Updated: 2024/01/26 13:16:01 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include"get_next_line_bonus.h"
+#include "get_next_line_bonus.h"
 
-void	ft_stricat(char *dst, char *src, int src_len)
-{
-	int	idx;
-	int	src_idx;
-
-	idx = 0;
-	src_idx = 0;
-	while (dst[idx])
-		++idx;
-	while (src_idx < src_len)
-	{
-		dst[idx] = src[src_idx];
-		++idx;
-		++src_idx;
-	}
-}
-
-char	*ft_strdup(char *dst, char *src, int len)
+int	check_newline_strlen(char *s, int flag)
 {
 	int	idx;
 
 	idx = 0;
-	while (idx <= len)
-	{
-		dst[idx] = src[idx];
-		++idx;
-	}
-	dst[idx] = '\0';
-	return (dst);
-}
-
-int	check_newline(char *s)
-{
-	int	idx;
-
-	idx = 0;
-	while(idx < 4096 && s[idx])
+	while (s[idx])
 	{
 		if (s[idx] == '\n')
-			return (idx);
+			flag = 1;
 		++idx;
 	}
+	if (flag)
+		return (idx);
 	return (-1);
 }
 
-void	reset_buf_offset(char *buf, int idx)
+t_node	*find_fd(t_node *head, int fd)
 {
-	int	reset_idx;
+	t_node	*tmp;
 
-	reset_idx = 0;
-	while (buf[idx])
+	tmp = head;
+	while (tmp->next)
 	{
-		buf[reset_idx] = buf[idx];
-		++reset_idx;
-		++idx;
+		if (tmp->fd == fd)
+			return (tmp);
+		tmp = tmp->next;
 	}
-	while (buf[reset_idx])
+	if (!tmp)
+		tmp = add_new_fd(head, fd);
+	return (tmp);
+}
+
+t_node	*add_new_fd(t_node *head, int fd)
+{
+	t_node	*new;
+	t_node	*tmp;
+
+	new = (t_node *)malloc(sizeof(t_node));
+	if (!new)
+		return (0);
+	new->fd = fd;
+	new->buf = NULL;
+	new->len = 0;
+	new->res = BUFFER_SIZE;
+	new->next = NULL;
+	new->nl_flag = -1;
+	if (!head)
 	{
-		buf[reset_idx] = 0;
-		++reset_idx;
+		head = new;
+		return (head);
 	}
+	tmp = head;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = new;
+	return (tmp);
 }
