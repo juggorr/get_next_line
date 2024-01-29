@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/29 17:00:30 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:31:24 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line_bonus.h"
@@ -98,6 +98,7 @@ char	*get_next_line(int fd)
 {
 	static t_lnode	*head;
 	t_lnode			*tmp;
+	char			*dst;
 
 	if (fd < 0)
 		return (0);
@@ -107,10 +108,19 @@ char	*get_next_line(int fd)
 		return (0);
 	tmp = find_fd(head, fd);
 	if (!tmp)
+	{
+		free_all(head);
 		return (0);
+	}
 	while (tmp->nl_flag == -1 && tmp->res == BUFFER_SIZE)
 		read_to_buf(tmp);
-	return (ft_split(tmp));
+	dst = ft_split(dst);
+	if (!dst)
+	{
+		free_all(head);
+		return (0);
+	}
+	return (dst);
 }
 /*
 int	main(void)
