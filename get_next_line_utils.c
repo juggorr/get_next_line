@@ -6,26 +6,10 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 08:52:08 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/30 10:07:08 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/30 13:42:51 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
-
-int	check_newline_strlen(char *s, int flag)
-{
-	int	idx;
-
-	idx = 0;
-	while (s[idx])
-	{
-		if (s[idx] == '\n')
-			flag = 1;
-		++idx;
-	}
-	if (flag)
-		return (idx);
-	return (-1);
-}
 
 int	check_newline_idx(char *s)
 {
@@ -41,6 +25,24 @@ int	check_newline_idx(char *s)
 	return (-1);
 }
 
+char	*last_line(t_lnode *node)
+{
+	int		idx;
+	char	*dst;
+
+	idx = 0;
+	dst = (char *)malloc(sizeof(char) * (node->len + 1));
+	if (!dst)
+		return (0);
+	while (idx < node->len)
+	{
+		dst[idx] = node->buf[idx];
+		++idx;
+	}
+	dst[idx] = '\0';
+	return (dst);
+}
+
 t_lnode	*remove_fd(t_lnode *head, t_lnode *node)
 {
 	t_lnode	*tmp;
@@ -49,14 +51,16 @@ t_lnode	*remove_fd(t_lnode *head, t_lnode *node)
 	if (node == head)
 	{
 		tmp = head->next;
-		free(head->buf);
+		if (!head->buf)
+			free(head->buf);
 		free(head);
 		return (tmp);
 	}
 	while (tmp->next != node)
 		tmp = tmp->next;
 	tmp->next = node->next;
-	free(node->buf);
+	if (!node->buf)
+		free(node->buf);
 	free(node);
 	return (head);
 }
