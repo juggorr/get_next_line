@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/29 17:00:00 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/30 09:16:21 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line_bonus.h"
@@ -45,7 +45,7 @@ char	*ft_split(t_lnode *node)
 	nl_idx = check_newline_idx(node->buf);
 	if (nl_idx < 0)
 		return (node->buf);
-	dst = (char *)malloc(sizeof(char) * (nl_idx + 1));
+	dst = (char *)malloc(sizeof(char) * (nl_idx + 2));
 	if (!dst)
 		return (0);
 	idx = 0;
@@ -69,7 +69,7 @@ char	*reset_buf_offset(t_lnode *node, int nl_idx)
 	if (!dst)
 		return (0);
 	idx = 0;
-	while (idx < node->len - nl_idx)
+	while (idx < node->len - nl_idx - 1)
 	{
 		dst[idx] = node->buf[idx + nl_idx + 1];
 		++idx;
@@ -98,21 +98,28 @@ char	*get_next_line(int fd)
 {
 	static t_lnode	*head;
 	t_lnode			*tmp;
+	char			*dst;
 
-	if (fd < 0)
+	if (fd < 0 || fd > 1023)
 		return (0);
 	if (!head)
 		head = add_new_fd(head, fd);
-	if (!head)
-		return (0);
 	tmp = find_fd(head, fd);
 	if (!tmp)
 		return (0);
 	while (tmp->nl_flag == -1 && tmp->res == BUFFER_SIZE)
 		read_to_buf(tmp);
-	return (ft_split(tmp));
+	if (tmp->res == -1)
+		return (0);
+	dst = ft_split(tmp);
+	if (!dst)
+	{
+		free_all(head);
+		return (0);
+	}
+	return (dst);
 }
-/*
+
 int	main(void)
 {
 	int	fd = open("./text.txt", O_RDONLY);
@@ -135,4 +142,4 @@ int	main(void)
 	printf("%s", dst);
 	dst = get_next_line(fd2);
 	printf("%s", dst);
-}*/
+}

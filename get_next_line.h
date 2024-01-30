@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:53 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/29 16:59:18 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/30 08:38:20 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
@@ -34,6 +34,7 @@ char	*ft_split(t_lnode *node);
 int		ft_strjoin(t_lnode *node, char *tmp_buf);
 int		check_newline_strlen(char *s, int flag);
 int		check_newline_idx(char *s);
+void	free_all(t_lnode *head);
 t_lnode	*add_new_fd(t_lnode *head, int fd);
 t_lnode	*find_fd(t_lnode *head, int fd);
 

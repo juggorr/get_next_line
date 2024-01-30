@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 08:52:08 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/29 17:02:31 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/30 08:42:37 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line_bonus.h"
@@ -39,6 +39,21 @@ int	check_newline_idx(char *s)
 		++idx;
 	}
 	return (-1);
+}
+
+void	free_all(t_lnode *head)
+{
+	t_lnode	*tmp;
+	t_lnode	*tmp_post;
+
+	tmp = head;
+	while (!tmp)
+	{
+		tmp_post = tmp->next;
+		free(tmp->buf);
+		free(tmp);
+		tmp = tmp_post;
+	}
 }
 
 t_lnode	*find_fd(t_lnode *head, int fd)
