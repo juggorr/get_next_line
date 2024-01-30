@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/30 15:30:52 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 07:52:44 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -35,7 +35,6 @@ int	ft_strjoin(t_lnode *node, char *tmp_buf)
 	free(node->buf);
 	node->buf = new;
 	node->len += node->res;
-	printf("node->buf: %s\n", node->buf);
 	return (node->len);
 }
 
@@ -46,7 +45,7 @@ char	*ft_split(t_lnode *node)
 	int		nl_idx;
 
 	nl_idx = check_newline_idx(node->buf);
-	if (nl_idx < 0 || node->res < BUFFER_SIZE)
+	if (nl_idx < 0 && node->res < BUFFER_SIZE)
 	{
 		dst = last_line(node);
 		if (!dst)
@@ -112,7 +111,7 @@ char	*get_next_line(int fd)
 	t_lnode			*tmp;
 	char			*dst;
 
-	if (fd < 0 || fd > 1023)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!head)
 		head = add_new_fd(head, fd);
@@ -121,7 +120,6 @@ char	*get_next_line(int fd)
 		return (0);
 	while (tmp->nl_flag == -1 && tmp->res == BUFFER_SIZE)
 		read_to_buf(tmp);
-	printf("tmp->buf: %s\n", tmp->buf);
 	if (tmp->res < 0 || !(tmp->buf))
 	{
 		head = remove_fd(head, tmp);
@@ -135,20 +133,27 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	int		fd = open("foo.txt", O_RDONLY);
-	int	fd2 = open("bar.txt", O_RDONLY);
+	/*int	fd2 = open("foo.txt", O_RDONLY);
+	int	fd = open("bar.txt", O_RDONLY);*/
+	int	fd3 = open("a.txt", O_RDONLY);
 	char	*dst;
 
+	/*dst = get_next_line(fd);
+	printf("dst:%s", dst);
 	dst = get_next_line(fd);
-	printf("%s", dst);
+	printf("dst:%s", dst);
 	dst = get_next_line(fd);
-	printf("%s", dst);
-	dst = get_next_line(fd);
-	printf("%s", dst);
+	printf("dst:%s", dst);
 	dst = get_next_line(fd2);
-	printf("%s", dst);
+	printf("dst:%s", dst);
 	dst = get_next_line(fd2);
-	printf("%s", dst);
+	printf("dst:%s", dst);
 	dst = get_next_line(fd2);
-	printf("%s", dst);
+	printf("dst:%s", dst);*/
+	dst = get_next_line(fd3);
+	printf("dst:%s", dst);
+	dst = get_next_line(fd3);
+	printf("dst:%s", dst);
+	dst = get_next_line(fd3);
+	printf("dst:%s", dst);
 }
