@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 08:52:08 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/31 09:08:34 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 15:18:40 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -25,7 +25,7 @@ int	check_newline_idx(char *s)
 	return (-1);
 }
 
-char	*last_line(t_lnode *node)
+char	*last_line(t_lnode *head, t_lnode *node)
 {
 	int		idx;
 	char	*dst;
@@ -35,13 +35,18 @@ char	*last_line(t_lnode *node)
 		return (0);
 	dst = (char *)malloc(sizeof(char) * (node->len + 1));
 	if (!dst)
+	{
+		remove_fd(head, node);
 		return (0);
+	}
 	while (idx < node->len)
 	{
 		dst[idx] = node->buf[idx];
 		++idx;
 	}
 	dst[idx] = '\0';
+	free(node->buf);
+	node->buf = NULL;
 	return (dst);
 }
 
@@ -54,7 +59,10 @@ t_lnode	*remove_fd(t_lnode *head, t_lnode *node)
 	{
 		tmp = head->next;
 		if (!head->buf)
+		{
 			free(head->buf);
+			head->buf = NULL;
+		}
 		free(head);
 		return (tmp);
 	}
@@ -62,7 +70,10 @@ t_lnode	*remove_fd(t_lnode *head, t_lnode *node)
 		tmp = tmp->next;
 	tmp->next = node->next;
 	if (!node->buf)
+	{
 		free(node->buf);
+		node->buf = NULL;
+	}
 	free(node);
 	return (head);
 }
