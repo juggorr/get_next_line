@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:53 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/30 13:43:18 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:54:01 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
@@ -27,6 +27,7 @@ typedef struct s_lnode
 	struct s_lnode	*next;
 }	t_lnode;
 
+void	check_leak(void);
 char	*get_next_line(int fd);
 int		read_to_buf(t_lnode *node);
 char	*reset_buf_offset(t_lnode *node, int len);

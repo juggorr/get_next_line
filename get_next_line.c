@@ -6,10 +6,15 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/31 09:11:31 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 10:55:09 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
+
+void	check_leak(void)
+{
+	system("leaks a.out");
+}
 
 int	ft_strjoin(t_lnode *node, char *tmp_buf)
 {
@@ -84,7 +89,7 @@ char	*reset_buf_offset(t_lnode *node, int nl_idx)
 	node->buf = dst;
 	node->len -= nl_idx + 1;
 	node->nl_flag = -1;
-	return (dst);
+	return (node->buf);
 }
 
 int	read_to_buf(t_lnode *node)
@@ -106,6 +111,7 @@ char	*get_next_line(int fd)
 	t_lnode			*tmp;
 	char			*dst;
 
+	atexit(check_leak);
 	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!head)
@@ -128,8 +134,8 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	int	fd2 = open("foo.txt", O_RDONLY);
-	int	fd = open("bar.txt", O_RDONLY);
+	int	fd = open("foo.txt", O_RDONLY);
+	int	fd2 = open("bar.txt", O_RDONLY);
 	int	fd3 = open("a.txt", O_RDONLY);
 	char	*dst;
 
