@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 08:52:08 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/31 15:18:40 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 16:02:02 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -32,11 +32,14 @@ char	*last_line(t_lnode *head, t_lnode *node)
 
 	idx = 0;
 	if (node->len <= 0)
+	{
+		head = remove_fd(head, node);
 		return (0);
+	}
 	dst = (char *)malloc(sizeof(char) * (node->len + 1));
 	if (!dst)
 	{
-		remove_fd(head, node);
+		head = remove_fd(head, node);
 		return (0);
 	}
 	while (idx < node->len)

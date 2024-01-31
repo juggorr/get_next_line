@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/31 15:30:25 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 17:28:14 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -19,7 +19,7 @@ int	ft_strjoin(t_lnode *head, t_lnode *node, char *tmp_buf)
 	new = (char *)malloc(sizeof(char) * (node->len + node->res + 1));
 	if (!new)
 	{
-		remove_fd(head, node);
+		head = remove_fd(head, node);
 		return (0);
 	}
 	idx = -1;
@@ -44,7 +44,7 @@ char	*ft_split(t_lnode *head, t_lnode *node)
 	int		nl_idx;
 
 	nl_idx = check_newline_idx(node->buf);
-	if (node->nl_flag < 0 && node->res < BUFFER_SIZE)
+	if (nl_idx < 0 && node->res < BUFFER_SIZE)
 	{
 		dst = last_line(head, node);
 		if (!dst)
@@ -54,7 +54,7 @@ char	*ft_split(t_lnode *head, t_lnode *node)
 	dst = (char *)malloc(sizeof(char) * (nl_idx + 2));
 	if (!dst)
 	{
-		remove_fd(head, node);
+		head = remove_fd(head, node);
 		return (0);
 	}
 	idx = -1;
@@ -74,15 +74,12 @@ char	*reset_buf_offset(t_lnode *head, t_lnode *node, int nl_idx)
 	dst = (char *)malloc(sizeof(char) * (node->len - nl_idx));
 	if (!dst)
 	{
-		remove_fd(head, node);
+		head = remove_fd(head, node);
 		return (0);
 	}
-	idx = 0;
-	while (idx < node->len - nl_idx - 1)
-	{
+	idx = -1;
+	while (++idx < node->len - nl_idx - 1)
 		dst[idx] = node->buf[idx + nl_idx + 1];
-		++idx;
-	}
 	dst[idx] = '\0';
 	free(node->buf);
 	node->buf = dst;
@@ -127,7 +124,7 @@ char	*get_next_line(int fd)
 	dst = ft_split(head, tmp);
 	return (dst);
 }
-
+/*
 int	main(void)
 {
 	int	fd = open("foo.txt", O_RDONLY);
@@ -158,4 +155,4 @@ int	main(void)
 	printf("dst:%s", dst);
 	dst = get_next_line(fd3);
 	printf("dst:%s", dst);
-}
+}*/
