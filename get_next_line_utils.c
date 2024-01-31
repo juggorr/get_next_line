@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 08:52:08 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/30 13:42:51 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 09:08:34 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -31,6 +31,8 @@ char	*last_line(t_lnode *node)
 	char	*dst;
 
 	idx = 0;
+	if (node->len <= 0)
+		return (0);
 	dst = (char *)malloc(sizeof(char) * (node->len + 1));
 	if (!dst)
 		return (0);

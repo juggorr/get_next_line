@@ -6,7 +6,7 @@
 /*   By: juggorr <juggorr@gmail.com>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 17:25:07 by juggorr           #+#    #+#             */
-/*   Updated: 2024/01/31 07:52:44 by juggorr          ###   ########.fr       */
+/*   Updated: 2024/01/31 09:11:31 by juggorr          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
@@ -31,7 +31,7 @@ int	ft_strjoin(t_lnode *node, char *tmp_buf)
 		new[node->len + idx] = tmp_buf[idx];
 		++idx;
 	}
-	new[idx] = '\0';
+	new[node->len + idx] = '\0';
 	free(node->buf);
 	node->buf = new;
 	node->len += node->res;
@@ -93,12 +93,7 @@ int	read_to_buf(t_lnode *node)
 
 	node->res = read(node->fd, tmp_buf, BUFFER_SIZE);
 	if (node->res <= 0)
-	{
-		node->buf = NULL;
-		node->len = 0;
-		node->nl_flag = -1;
 		return (0);
-	}
 	tmp_buf[node->res] = '\0';
 	node->nl_flag = check_newline_idx(tmp_buf);
 	ft_strjoin(node, tmp_buf);
@@ -133,23 +128,25 @@ char	*get_next_line(int fd)
 
 int	main(void)
 {
-	/*int	fd2 = open("foo.txt", O_RDONLY);
-	int	fd = open("bar.txt", O_RDONLY);*/
+	int	fd2 = open("foo.txt", O_RDONLY);
+	int	fd = open("bar.txt", O_RDONLY);
 	int	fd3 = open("a.txt", O_RDONLY);
 	char	*dst;
 
-	/*dst = get_next_line(fd);
-	printf("dst:%s", dst);
 	dst = get_next_line(fd);
 	printf("dst:%s", dst);
 	dst = get_next_line(fd);
 	printf("dst:%s", dst);
+	dst = get_next_line(fd);
+	printf("dst:%s", dst);
+	printf("\n");
 	dst = get_next_line(fd2);
 	printf("dst:%s", dst);
 	dst = get_next_line(fd2);
 	printf("dst:%s", dst);
 	dst = get_next_line(fd2);
-	printf("dst:%s", dst);*/
+	printf("dst:%s", dst);
+	printf("\n");
 	dst = get_next_line(fd3);
 	printf("dst:%s", dst);
 	dst = get_next_line(fd3);
